@@ -1,6 +1,6 @@
-# ClubReady API and MCP server: connect ClubReady to ChatGPT, Claude and any AI agent
+# ClubReady API integration and MCP server: connect ClubReady to ChatGPT, Claude and any AI agent
 
-ClubReady API and MCP server, unofficial, by Cotlet. Your AI works in your own signed-in ClubReady account: prospects, members, class bookings, past dues and reports, on the same screens your login opens. No developer and no ClubReady API key needed. Cotlet is independent and is not affiliated with ClubReady.
+ClubReady API integration and MCP server, unofficial, by Cotlet. Your AI works in your own signed-in ClubReady account: prospects, members, class bookings, past dues and reports, on the same screens your login opens. No developer and no ClubReady API key needed. Cotlet is independent and is not affiliated with ClubReady.
 
 **Does ClubReady have an API or an MCP server?** ClubReady has an Add Lead API that a club turns on to add prospects from its website or forms. Its wider APIs and data notifications are for partners that a club authorizes through the ClubReady Partner Portal. ClubReady has no MCP server, no ChatGPT or Claude app and no app of its own in the Zapier directory (checked 20 Nov 2026).
 
