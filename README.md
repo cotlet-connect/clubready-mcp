@@ -12,17 +12,25 @@ ClubReady API integration and MCP server, unofficial, by Cotlet. Your AI works i
 | Past dues | "Build this week's past-due list with amount and days overdue, and draft a reminder for each member." | Every Monday |
 | Class bookings | "Who is booked and who is on the waitlist for Saturday 9:00? How many spots are left?" | Before each class day |
 | Members going quiet | "Which members have not checked in for 14 days? Sort them by membership type." | Weekly |
-| Milestones | "Which members reach their 100th class this week?" | Weekly |
+| Upcoming milestones | "Which members reach their 50th or 100th class in the next 7 days? Tell the front desk." | Every morning |
 | Leads from ads and forms | "Add the leads in this spreadsheet as prospects, with their source and a note." | When a new file arrives |
 | Exports | "Download this week's check-in export and the member list as spreadsheets." | Weekly |
-| Payroll and commission | "Run the commission and payroll report for this pay period and total it per coach." | Every pay period |
+| Instructor pay | "Count classes and attendees per instructor for this pay period and total the commission and payroll report." | Every pay period |
 | Credits and packs | "Which members on a 10-class pack have one class left?" | Weekly |
+| ClassPass and Wellhub bookings | "List this week's ClassPass and Wellhub bookings and check that each one is in ClubReady." | Daily |
+| Leads from GoHighLevel or HubSpot | "Add this GoHighLevel lead to ClubReady as a prospect, with its source." | Each new lead, through your own endpoint |
+| Freezes and cancellations | "List this month's freezes and cancellation requests with member and date." | Weekly |
+| Late cancels | "Who late-cancelled this week? List member, class and time." | Weekly |
+| Session credits from a spreadsheet | "Add the session credits in this spreadsheet to each member. Show me before you save." | When a file arrives |
+| Birthdays | "Which members have a birthday this week? Draft a short note for each." | Weekly |
+| Unlimited plans with no credits | "Find members on unlimited plans whose account shows no credits." | Weekly |
+| Review requests | "List today's class attendees and draft a review request for each. Send nothing yet." | Every evening |
 
 Your AI asks you before it sends, books or changes anything. Billing, agreements and payments stay in your hands: Cotlet refuses payments.
 
 ## Your own ClubReady API, built with Cotlet
 
-ClubReady gives a club owner no self-serve API beyond Add Lead. With Cotlet you build your own: your AI does the job once in your Cloud Browser, you save it as an endpoint, and you call it from Google Sheets, n8n, Make or your own code.
+ClubReady gives a club owner no self-serve API beyond Add Lead. With Cotlet you build your own: your AI does the job once in your Cloud Browser, you save it as an endpoint, and you call it from Google Sheets, Looker Studio, Power BI, GoHighLevel, HubSpot, n8n, Make or your own code.
 
 Examples you can build in a few minutes (none of them exists until you build it):
 
@@ -33,8 +41,11 @@ Examples you can build in a few minutes (none of them exists until you build it)
 | `class-roster` | booked and waitlisted members for a class and date |
 | `checkins` | check-ins between two dates |
 | `inactive-members` | members with no check-in for N days |
-| `class-milestones` | members who reach a class count, for example 100 |
+| `class-milestones` | members who reach a class count, for example 100, in the coming days |
 | `packs-running-low` | members with one or two classes left |
+| `late-cancels` | late cancellations between two dates, with member and class |
+| `freezes-and-cancellations` | freezes and cancellation requests in a period |
+| `birthdays` | members with a birthday in the coming days |
 | `add-prospect` | adds a prospect with name, phone, email, source and note (writes only after you allow it) |
 
 Call it with your Cotlet API key, JSON in and JSON out:
@@ -140,6 +151,18 @@ ClubReady's help center sets up Zapier through an API authorization form, and Cl
 **How do I get ClubReady data into Google Sheets every day?**
 
 Build a `checkins` or `past-due-members` endpoint once, then call it from Google Sheets or n8n on a schedule. Or ask your AI to download the report as a spreadsheet each week.
+
+**How do I connect ClubReady to GoHighLevel or HubSpot?**
+
+ClubReady has no built-in GoHighLevel integration, and GoHighLevel users ask for one on its idea board. With Cotlet you build two endpoints: `new-prospects` sends ClubReady prospects to GoHighLevel or HubSpot, and `add-prospect` adds their leads to ClubReady. Call them from GoHighLevel workflows, HubSpot, Zapier, Make or n8n.
+
+**Can I build custom ClubReady reports or dashboards in Looker Studio or Power BI?**
+
+Yes. ClubReady's built-in reports are fixed, so build your own report endpoints, such as `checkins`, `new-prospects` and `past-due-members`, then load them into Google Sheets, Looker Studio or Power BI on a schedule.
+
+**How do I export all my data before I leave ClubReady?**
+
+ClubReady's help center describes a data exit file you request when you cancel your site. Your AI can also download every report your login can export, such as the member list, agreements, check-ins and sales.
 
 **Can AI follow up leads who did not book a trial?**
 
