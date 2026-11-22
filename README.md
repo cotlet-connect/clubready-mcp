@@ -1,34 +1,68 @@
 # How to connect ClubReady to ChatGPT, Claude and any AI agent
 
-Connect ClubReady to ChatGPT, Claude and other AI agents through Cotlet. Work in your own signed-in ClubReady account, with access controlled by your club role. Cotlet is independent and is not affiliated with ClubReady.
+ClubReady MCP server, unofficial, by Cotlet. Your AI works in your own signed-in ClubReady account: prospects, members, class bookings, past dues and reports, on the same screens your login opens. No developer and no ClubReady API key needed. Cotlet is independent and is not affiliated with ClubReady.
 
-## What you can ask
+**Does ClubReady have an API or an MCP server?** ClubReady has an Add Lead API that a club turns on to add prospects from its website or forms. Its wider APIs and data notifications are for partners that a club authorizes through the ClubReady Partner Portal. ClubReady has no MCP server, no ChatGPT or Claude app and no app of its own in the Zapier directory (checked 20 Nov 2026).
 
-> Search customer or prospect profiles in my authorized club.
+## What studio owners ask their AI to do in ClubReady
 
-> Show the customer profile for the member I select.
+| Job | Ask your AI | Make it repeat |
+|---|---|---|
+| Follow up new leads | "List yesterday's new prospects who have not booked a trial and draft a text for each. Send nothing yet." | Every morning, as a Cotlet automation |
+| Past dues | "Build this week's past-due list with amount and days overdue, and draft a reminder for each member." | Every Monday |
+| Class bookings | "Who is booked and who is on the waitlist for Saturday 9:00? How many spots are left?" | Before each class day |
+| Members going quiet | "Which members have not checked in for 14 days? Sort them by membership type." | Weekly |
+| Milestones | "Which members reach their 100th class this week?" | Weekly |
+| Leads from ads and forms | "Add the leads in this spreadsheet as prospects, with their source and a note." | When a new file arrives |
+| Exports | "Download this week's check-in export and the member list as spreadsheets." | Weekly |
+| Payroll and commission | "Run the commission and payroll report for this pay period and total it per coach." | Every pay period |
+| Credits and packs | "Which members on a 10-class pack have one class left?" | Weekly |
 
-> Prepare an update to a selected customer’s business contact details and show it before saving.
+Your AI asks you before it sends, books or changes anything. Billing, agreements and payments stay in your hands: Cotlet refuses payments.
 
-> Check the membership type for the customer I select and show any entitlement change before approval.
+## Your own ClubReady API, built with Cotlet
+
+ClubReady gives a club owner no self-serve API beyond Add Lead. With Cotlet you build your own: your AI does the job once in your Cloud Browser, you save it as an endpoint, and you call it from Google Sheets, n8n, Make or your own code.
+
+Examples you can build in a few minutes (none of them exists until you build it):
+
+| Endpoint you build | What it returns or does |
+|---|---|
+| `past-due-members` | name, phone, amount owed, days overdue |
+| `new-prospects` | prospects since a date, with source and trial status |
+| `class-roster` | booked and waitlisted members for a class and date |
+| `checkins` | check-ins between two dates |
+| `inactive-members` | members with no check-in for N days |
+| `class-milestones` | members who reach a class count, for example 100 |
+| `packs-running-low` | members with one or two classes left |
+| `add-prospect` | adds a prospect with name, phone, email, source and note (writes only after you allow it) |
+
+Call it with your Cotlet API key, JSON in and JSON out:
+
+```bash
+curl -X POST https://cotlet.dev/api/v1/custom/past-due-members \
+  -H "Authorization: Bearer $COTLET_API_KEY" -H "Content-Type: application/json" -d '{}'
+```
+
+Limits: one call runs up to 90 seconds, writes wait for your consent, payments are blocked. Start here: https://cotlet.dev/app/custom-api/new?app=clubready
 
 ## Connect in 2 minutes
 
-Get your API key at https://cotlet.dev/app and export it as `COTLET_API_KEY`.
+Sign up at https://cotlet.dev, sign in to ClubReady once in your Cloud Browser, then add Cotlet to your AI.
 
 ### Claude
 
-Add `https://cotlet.dev/mcp/v1` as a custom connector in Claude and sign in with Cotlet.dev.
+Settings → Connectors → Add custom connector, paste `https://cotlet.dev/mcp/v1` and sign in with Cotlet.dev.
+
+### ChatGPT
+
+Open Plugins in ChatGPT, choose Create as a plugin, paste `https://cotlet.dev/mcp/v1` and sign in with Cotlet.dev. No API key needed.
 
 ### Claude Code
 
 ```bash
 claude mcp add --transport http cotlet https://cotlet.dev/mcp/v1 --header "Authorization: Bearer $COTLET_API_KEY"
 ```
-
-### ChatGPT
-
-Settings → Apps → add connector URL `https://cotlet.dev/mcp/v1`, then sign in with Cotlet.dev. No API key needed.
 
 ### Cursor
 
@@ -85,31 +119,39 @@ python3 clubready_agent.py tools     # list Cotlet.dev tools
 python3 clubready_agent.py serve     # start the stdio MCP server (same as no argument)
 ```
 
-## Questions from ClubReady users
+## Questions from ClubReady owners
 
-**How do I get access?**
+**Is there a ChatGPT integration for ClubReady?**
 
-Create a Cotlet account, open ClubReady and sign in at app.clubready.com/login. Enable it for agents, then add Cotlet to your chosen AI assistant.
+Not from ClubReady. With Cotlet, ChatGPT and Claude work in your own ClubReady account through your Cloud Browser, in their phone apps too.
 
-**How do I connect ClubReady to ChatGPT or Claude?**
+**Can Claude connect to ClubReady through MCP?**
 
-Sign up at cotlet.dev, log in to ClubReady once in its Cloud Browser and add Cotlet to ChatGPT or Claude, following the steps in your console. No API key is needed. ChatGPT and Claude then work in your ClubReady account through Cotlet, in their phone apps too.
+Yes, through this unofficial MCP server. ClubReady publishes no MCP server of its own.
 
-**What can ChatGPT do in ClubReady?**
+**How do I get a ClubReady API key?**
 
-With Cotlet, ChatGPT, Claude and other AI agents handle jobs like these in ClubReady: search customer or prospect profiles; view a customer profile; view customer amenities. You ask in plain words.
+ClubReady gives API access to partners a club authorizes, and the Add Lead API only adds prospects. If you want your own API without a partner, build it with Cotlet Custom API (see above).
 
-**Is there an official ChatGPT or Claude app for ClubReady?**
+**Can I connect ClubReady to Zapier?**
 
-No vendor-published ClubReady MCP server or ChatGPT or Claude connector was found in the sources checked on 12 November 2026. Cotlet is independent and is not affiliated with ClubReady.
+ClubReady's help center sets up Zapier through an API authorization form, and ClubReady has no app of its own in the Zapier directory. With Cotlet you can call your own ClubReady endpoint from Zapier, Make or n8n instead.
 
-**Does ClubReady have an API?**
+**How do I get ClubReady data into Google Sheets every day?**
 
-ClubReady provides an official API and real-time data notifications. Request a key from ClubReady Support; third-party authorization is approved by the club owner.
+Build a `checkins` or `past-due-members` endpoint once, then call it from Google Sheets or n8n on a schedule. Or ask your AI to download the report as a spreadsheet each week.
 
-**Is the MCP server different from the REST API?**
+**Can AI follow up leads who did not book a trial?**
 
-Only in how it is called. Both carry the same 168 tools, inputs, answers, API key and price. Agents use MCP; scripts and HTTP steps use REST.
+Yes. Your AI lists the new prospects without a trial, drafts a text for each, and sends nothing until you say yes.
+
+**Can an AI agent build my past-due list and text those members?**
+
+Yes. It builds the list from Manage Past Dues and drafts the messages. Sending waits for your OK, and payments stay with you.
+
+**Does ClubReady work with QuickBooks?**
+
+ClubReady's help center says it does not integrate with QuickBooks. Your AI can download the remit and sales reports you reconcile by hand.
 
 **Is Cotlet affiliated with ClubReady?**
 
@@ -117,91 +159,25 @@ No. Cotlet is independent and not affiliated with ClubReady.
 
 ## Find it on
 
-- [ClubReady on Cotlet.dev](https://cotlet.dev/integrations/clubready-api-mcp-server?utm_source=github&utm_medium=readme&utm_campaign=clubready&utm_content=find)
+- [ClubReady MCP server on Cotlet.dev](https://cotlet.dev/integrations/clubready-api-mcp-server?utm_source=github&utm_medium=readme&utm_campaign=clubready&utm_content=find)
+- [ClubReady API with Cotlet](https://cotlet.dev/integrations/api/clubready?utm_source=github&utm_medium=readme&utm_campaign=clubready&utm_content=find)
+- [Does ClubReady have an API or MCP server?](https://cotlet.dev/api-status/clubready?utm_source=github&utm_medium=readme&utm_campaign=clubready&utm_content=find)
 - [PyPI package clubready-mcp](https://pypi.org/project/clubready-mcp/)
 - [Odel](https://odel.app/modules/cotlet/clubready)
-- [mcpbeat](https://mcpbeat.com/mcp-servers/cotlet/clubready/)
-- [Step-by-step guide (PDF) on Internet Archive](https://archive.org/details/cotlet-connect-clubready-to-ai-agents-guide)
 
-## Also works with
+## More gym and studio apps on Cotlet
 
-- [Mangomint MCP](https://github.com/cotlet-connect/mangomint-mcp)
-- [Wanderlog MCP](https://github.com/cotlet-connect/wanderlog-mcp)
-- [SmugMug MCP](https://github.com/cotlet-connect/smugmug-mcp)
-- [Garmin Connect MCP](https://github.com/cotlet-connect/garmin-mcp)
-- [Housecall Pro MCP](https://github.com/cotlet-connect/housecall-pro-mcp)
-- [Medium MCP](https://github.com/cotlet-connect/medium-mcp)
-- [Crexi MCP](https://github.com/cotlet-connect/crexi-mcp)
-- [DistroKid MCP](https://github.com/cotlet-connect/distrokid-mcp)
-- [LinkedIn MCP](https://github.com/cotlet-connect/linkedin-mcp)
-- [EstimateOne MCP](https://github.com/cotlet-connect/estimateone-mcp)
-- [Google Search Console MCP](https://github.com/cotlet-connect/google-search-console-mcp)
-- [Lichess MCP](https://github.com/cotlet-connect/lichess-mcp)
-- [Strava MCP](https://github.com/cotlet-connect/strava-mcp)
-- [StreamElements MCP](https://github.com/cotlet-connect/streamelements-mcp)
-- [Meetup MCP](https://github.com/cotlet-connect/meetup-mcp)
-- [AccuRanker MCP](https://github.com/cotlet-connect/accuranker-mcp)
-- [GetYourGuide MCP](https://github.com/cotlet-connect/getyourguide-mcp)
-- [Idealista MCP](https://github.com/cotlet-connect/idealista-mcp)
-- [Riverside MCP](https://github.com/cotlet-connect/riverside-mcp)
-- [Udemy MCP](https://github.com/cotlet-connect/udemy-mcp)
-- [Faire MCP](https://github.com/cotlet-connect/faire-mcp)
-- [Teachable MCP](https://github.com/cotlet-connect/teachable-mcp)
-- [Vagaro MCP](https://github.com/cotlet-connect/vagaro-mcp)
-- [Buildertrend MCP](https://github.com/cotlet-connect/buildertrend-mcp)
-- [Zoopla MCP](https://github.com/cotlet-connect/zoopla-mcp)
-- [Dribbble MCP](https://github.com/cotlet-connect/dribbble-mcp)
-- [Hostelworld MCP](https://github.com/cotlet-connect/hostelworld-mcp)
-- [Mashvisor MCP](https://github.com/cotlet-connect/mashvisor-mcp)
-- [Rent Manager MCP](https://github.com/cotlet-connect/rent-manager-mcp)
-- [ThriveCart MCP](https://github.com/cotlet-connect/thrivecart-mcp)
-- [Fresha MCP](https://github.com/cotlet-connect/fresha-mcp)
-- [Booksy MCP](https://github.com/cotlet-connect/booksy-mcp)
-- [BookingKoala MCP](https://github.com/cotlet-connect/bookingkoala-mcp)
-- [Milanote MCP](https://github.com/cotlet-connect/milanote-mcp)
-- [Partiful MCP](https://github.com/cotlet-connect/partiful-mcp)
-- [Contractor Foreman MCP](https://github.com/cotlet-connect/contractor-foreman-mcp)
-- [Pixieset MCP](https://github.com/cotlet-connect/pixieset-mcp)
-- [GlossGenius MCP](https://github.com/cotlet-connect/glossgenius-mcp)
-- [ZenMaid MCP](https://github.com/cotlet-connect/zenmaid-mcp)
-- [AroFlo MCP](https://github.com/cotlet-connect/aroflo-mcp)
-- [Simpro MCP](https://github.com/cotlet-connect/simpro-mcp)
-- [Workiz MCP](https://github.com/cotlet-connect/workiz-mcp)
-- [Kickserv MCP](https://github.com/cotlet-connect/kickserv-mcp)
-- [Service Autopilot MCP](https://github.com/cotlet-connect/service-autopilot-mcp)
-- [Boulevard MCP](https://github.com/cotlet-connect/boulevard-mcp)
-- [Mindbody MCP](https://github.com/cotlet-connect/mindbody-mcp)
-- [Meevo MCP](https://github.com/cotlet-connect/meevo-mcp)
+- [Pike13 MCP](https://github.com/cotlet-connect/pike13-mcp)
+- [Club OS MCP](https://github.com/cotlet-connect/club-os-mcp)
+- [Gymdesk MCP](https://github.com/cotlet-connect/gymdesk-mcp)
+- [Exercise.com MCP](https://github.com/cotlet-connect/exercise-com-mcp)
+- [Eversports Studio Manager MCP](https://github.com/cotlet-connect/eversports-studio-manager-mcp)
 - [DaySmart MCP](https://github.com/cotlet-connect/daysmart-mcp)
 - [Acuity Scheduling MCP](https://github.com/cotlet-connect/acuity-scheduling-mcp)
+- [Zenoti MCP](https://github.com/cotlet-connect/zenoti-mcp)
+- [PushPress MCP](https://github.com/cotlet-connect/pushpress-mcp)
+- [Trainerize MCP](https://github.com/cotlet-connect/trainerize-mcp)
+- [TrueCoach MCP](https://github.com/cotlet-connect/truecoach-mcp)
+- [GlossGenius MCP](https://github.com/cotlet-connect/glossgenius-mcp)
+- [Fresha MCP](https://github.com/cotlet-connect/fresha-mcp)
 - [Jane App MCP](https://github.com/cotlet-connect/jane-app-mcp)
-- [FieldEdge MCP](https://github.com/cotlet-connect/fieldedge-mcp)
-- [Phorest MCP](https://github.com/cotlet-connect/phorest-mcp)
-- [DINGG MCP](https://github.com/cotlet-connect/dingg-mcp)
-- [Invoice Simple MCP](https://github.com/cotlet-connect/invoice-simple-mcp)
-- [PhotoShelter MCP](https://github.com/cotlet-connect/photoshelter-mcp)
-- [RazorSync MCP](https://github.com/cotlet-connect/razorsync-mcp)
-- [ShootProof MCP](https://github.com/cotlet-connect/shootproof-mcp)
-- [Invoice2go MCP](https://github.com/cotlet-connect/invoice2go-mcp)
-- [Appointy MCP](https://github.com/cotlet-connect/appointy-mcp)
-- [Contractor+ MCP](https://github.com/cotlet-connect/contractor-plus-mcp)
-- [Petpooja MCP](https://github.com/cotlet-connect/petpooja-mcp)
-- [Teachers Pay Teachers MCP](https://github.com/cotlet-connect/teachers-pay-teachers-mcp)
-- [Bloom MCP](https://github.com/cotlet-connect/bloom-mcp)
-- [AestheticsPro MCP](https://github.com/cotlet-connect/aestheticspro-mcp)
-- [Club OS MCP](https://github.com/cotlet-connect/club-os-mcp)
-- [EZ Lawn Biller MCP](https://github.com/cotlet-connect/ez-lawn-biller-mcp)
-- [Eversports Studio Manager MCP](https://github.com/cotlet-connect/eversports-studio-manager-mcp)
-- [Exercise.com MCP](https://github.com/cotlet-connect/exercise-com-mcp)
-- [Gymdesk MCP](https://github.com/cotlet-connect/gymdesk-mcp)
-- [Iris Works MCP](https://github.com/cotlet-connect/iris-works-mcp)
-- [CoachingPortal MCP](https://github.com/cotlet-connect/coachingportal-mcp)
-- [CrewNest MCP](https://github.com/cotlet-connect/crewnest-mcp)
-- [Paired Plus MCP](https://github.com/cotlet-connect/paired-plus-mcp)
-- [All apps connected through Cotlet.dev](https://github.com/cotlet-connect)
-
----
-
-More: https://cotlet.dev/integrations/clubready-api-mcp-server?utm_source=github&utm_medium=readme&utm_campaign=clubready
-
-Request access: https://cotlet.dev/signup?app=clubready&utm_source=github&utm_medium=readme&utm_campaign=clubready
